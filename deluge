@@ -1,0 +1,59 @@
+product_name="Developer some Developer value Dark";
+search = "Developer";
+
+
+//containes
+
+// if(product_name.indexOf(search) == -1){
+// 	info false;
+// }
+// else{
+// 	info true;
+// }
+	
+
+//starts with
+
+// if(product_name.indexOf(search) == 0){
+// 	info true;
+// }
+// else{
+// 	info false;
+// }
+
+
+//ends with
+
+
+// if(product_name.lastIndexOf(search) == product_name.length() - search.length()){
+// 	info true;
+// }
+// else {
+// 	info false;
+// }
+
+
+//equalsIgnoreCase
+
+// product_name="Zoho Creator";
+// org_name="zoho creator";
+
+// if(product_name.toLowerCase() == org_name.toLowerCase()){
+// 	info true;
+// }
+// else{
+// 	info false;
+// }
+
+
+//Get Alpha
+
+// newProductList = product_name.toCollection("");
+// result = "";
+// for each new in newProductList {
+// 	if( new.matches("[a-zA-Z]") ){
+// 		result = result.concat(new);
+// 	}
+// }
+// info result;
+
