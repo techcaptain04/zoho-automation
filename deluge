@@ -2,7 +2,7 @@ product_name="Developer some Developer value Dark";
 search = "Developer";
 
 
-//containes
+//   1 - containes
 
 // if(product_name.indexOf(search) == -1){
 // 	info false;
@@ -12,7 +12,7 @@ search = "Developer";
 // }
 	
 
-//starts with
+//   2 - starts with
 
 // if(product_name.indexOf(search) == 0){
 // 	info true;
@@ -22,7 +22,7 @@ search = "Developer";
 // }
 
 
-//ends with
+//  3 - ends with
 
 
 // if(product_name.lastIndexOf(search) == product_name.length() - search.length()){
@@ -33,7 +33,7 @@ search = "Developer";
 // }
 
 
-//equalsIgnoreCase
+//  4 - equalsIgnoreCase
 
 // product_name="Zoho Creator";
 // org_name="zoho creator";
@@ -46,7 +46,7 @@ search = "Developer";
 // }
 
 
-//Get Alpha
+// 5 - Get Alpha
 
 // newProductList = product_name.toCollection("");
 // result = "";
@@ -56,4 +56,142 @@ search = "Developer";
 // 	}
 // }
 // info result;
+
+//  6 - getOccurenceCount
+
+statement = "Zoho Creator is a Product";
+search = "Zoho";
+
+
+newCollection = statement.toList(" ");
+
+occurance = 0;
+
+for each item in newCollection {
+	if(item == search){
+		occurance = occurance + 1;
+	}
+}
+
+info occurance;
+
+// 7 - getSuffix
+
+product_name="Zoho Creator is a great tool for developers.";
+
+search = "for";
+
+newCollection = product_name.toCollection(" ");
+
+indexOfItem = newCollection.indexOf(search);
+indexOfPrev = newCollection.indexOf(search) -1;
+
+
+if(indexOfPrev < 0){
+	info "Not found";
+}
+else{
+	info newCollection.subList(indexOfPrev,indexOfItem);
+}
+
+// 8 - getPrefix
+product_name="Zoho Creator is a great tool for developers.";
+
+search = "great";
+
+newCollection = product_name.toCollection(" ");
+
+indexOfPrev = newCollection.indexOf(search) -1;
+
+start = newCollection.indexOf(search)+ 1;
+end = newCollection.indexOf(search) + 2;
+
+
+if(indexOfPrev < 0){
+	info "Not found";
+}
+else{
+	info newCollection.subList(start,end);
+}
+
+// 9 - remove
+product_name="Zoho Creator is a great Tool";
+
+remove = "creator";
+
+newCollection = product_name.toCollection(" ");
+
+result = "";
+
+if(product_name.indexOf(remove) == -1){
+	info "not found";
+}
+else{
+	for each item in newCollection{
+		if(item != creator){
+			result = result.concat(item + " ");
+		}
+	}
+	info result;
+}
+
+//  10 - removeAllAlpha
+product_name = "1-Red,2-Grean,3-Blue";
+
+newCollection = product_name.toCollection("");
+
+result = "";
+
+
+for each item in newCollection{
+	if(item.matches("[a-zA-Z]") != true){
+		result = result.concat(item);
+	}
+}
+info result;
+
+
+//  11 - indexOf
+indexOf = statementParts.get(0).length();
+if(indexOf == statement.length() ){
+	info -1;
+} else {
+	info indexOf;
+}
+
+//  12 - removeFirstOccurence
+
+product_name="Red ,Green ,Green";
+search = "Green";
+start = product_name.indexOf(search);
+end =  start + search.length();
+
+finalResult = "";
+if(product_name.indexOf(search) != -1){
+	result1 = product_name.subText(0,start);
+    result2 = product_name.subText(end,product_name.length());
+	finalResult = result1.concat(result2);
+}
+else{
+	info "not found";
+}
+info finalResult;
+
+
+//   13 - removeLastOccurance
+product_name="Red ,Green , Orange, Apple Green,Yellow";
+search = "Green";
+
+endPoint = product_name.lastIndexOf(search);
+
+
+finalResult = "";
+if(product_name.indexOf(search) != -1){
+	finalResult = product_name.subText(0,endPoint);
+}
+else{
+	info "not found";
+}
+info finalResult;
+
 
