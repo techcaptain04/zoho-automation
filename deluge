@@ -195,3 +195,46 @@ else{
 info finalResult;
 
 
+//  14- startsWithIgnoreCase
+
+product_name="Creator Application";
+search = "Application";
+
+if(product_name.toLowerCase().indexOf(search.toLowerCase()) == 0){
+	info true;
+}
+else{
+	info false;
+}
+
+
+//  15 - endsWithIgnoreCase
+
+product_name="Creator Application is a great tool for zoho";
+search = "Zoho";
+
+product_name_low = product_name.toLowerCase();
+search_low = search.toLowerCase();
+
+if(product_name_low.lastIndexOf(search_low) == product_name_low.length() -search_low.length()){
+	info true;
+}
+else {
+	info false;
+}
+
+
+//  16 - abs()
+
+number= -1223123123.22;
+
+ practice = number.toCollection("");
+ 
+ for each item in practice{
+	 if(item == '-'){
+		 number = number * -1;
+	 }
+ }
+ 
+ info number;
+ 
