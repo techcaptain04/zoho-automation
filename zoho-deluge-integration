@@ -1,0 +1,33 @@
+//Bulk adding
+employee1 = Map();
+employee1.put("Last_Name","Tanveer");
+employee1.put("Email","tanveer@instawebworks.com.au");
+employee1.put("Company","Insta web works");
+
+
+employee2 = Map();
+employee2.put("Last_Name","Shawon");
+employee2.put("Email","shawon@instawebworks.com.au");
+employee2.put("Company","Insta web works");
+
+new_list = list();
+new_list.add(employee1);
+new_list.add(employee2);
+
+bulkadding = zoho.crm.bulkCreate("Leads", new_list);
+info bulkadding;
+
+
+//search records
+
+ifrat = zoho.crm.searchRecords("Leads", "Email:starts_with:ifrat");
+
+info ifrat;
+
+//update info
+
+update_ifrat = Map();
+update_ifrat.put("Email","ifrat@instawebworks.com.au");
+
+update_action = zoho.crm.updateRecord("Leads", 4394900000009364002, update_ifrat);
+info update_action;
