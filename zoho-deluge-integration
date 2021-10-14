@@ -54,3 +54,20 @@ for each lead in myLeads{
 		info lead.get("Email");
 	}
 }
+
+//Bulk update 100 entry limitation problem solve
+allleads = zoho.crm.getRecords("Leads");
+mylist = list();
+for each item in allleads{
+	entry = {"id": item.get("id"),"Company":"Insta web Works"};
+	mylist.add(entry);
+	if(mylist.size() == 100){
+		update_it = zoho.crm.bulkUpdate("Leads", mylist);
+		mylist = list();
+	}
+}
+if(mylist.size() > 0){
+	update_it = zoho.crm.bulkUpdate("Leads", mylist);
+}
+
+info update_it;
