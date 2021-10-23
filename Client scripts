@@ -1,28 +1,40 @@
 //getting data from a different module and setting it in the current module
 
-const selected_deal = ZDK.Page.getField('Deals').getValue();
+let selected_deal = ZDK.Page.getField('Deals').getValue();
 
-const deal = ZDK.Apps.CRM.Deals.fetchById(selected_deal.id);
-
-log(deal)
-
-    const fields = [
+let deal = "";
+let info = {};
+    
+let fields = [
         'Lead_Source',
         'Next_Step',
         'Type',
         'Probability',
         'Expected_Revenue',
+        'Website',
+        'Cordinates',
+        'Commission',
     ];
 
-    let info = {};
-    fields.forEach(field => {
+fields.forEach(field => {
+    if (selected_deal !== null) {
+        deal = ZDK.Apps.CRM.Deals.fetchById(selected_deal.id);
         info[field] = deal[field]
-    })
-
-
-const account = ZDK.Apps.CRM.Accounts.fetchById(deal.Account_Name_Lookup_Id);
-const contact = ZDK.Apps.CRM.Contacts.fetchById(deal.Contact_Name_Lookup_Id);
+    }
+    else {
+        info[field] = null;
+    }
+})
 
 ZDK.Page.getForm().setValues(info);
-ZDK.Page.getForm().setValues({ 'Account_Name': { name: account.Account_Name, id: account.id },'Contact_Name': {name: contact.Full_Name, id: contact.id}});
+
+if (selected_deal !== null) {
+    const account = ZDK.Apps.CRM.Accounts.fetchById(deal.Account_Name_Lookup_Id);
+    const contact = ZDK.Apps.CRM.Contacts.fetchById(deal.Contact_Name_Lookup_Id);
+    ZDK.Page.getForm().setValues({ 'Account_Name': { name: account.Account_Name, id: account.id }, 'Contact_Name': { name: contact.Full_Name, id: contact.id } });
+}
+else {
+    ZDK.Page.getForm().setValues({ 'Account_Name': null, 'Contact_Name': null });
+}
+      
        
