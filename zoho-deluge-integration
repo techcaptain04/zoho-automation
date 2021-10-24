@@ -71,3 +71,23 @@ if(mylist.size() > 0){
 }
 
 info update_it;
+
+
+// Based on First Char count how many leads are in each group
+
+page_no = 1;
+per_page =200;
+list_str = ".".leftPad(50).toList("");
+leads_list = list();
+for each num in list_str {
+	leads_list.addAll(zoho.crm.getRecords("Leads", page_no, per_page));
+	page_no = page_no + 1;
+}
+
+count_map = map();
+for each item in leads_list{
+	firsthcar = item.get("Full_Name").subText(0,1);
+	count_map.put(firsthcar, ifnull(count_map.get(firsthcar), 0) + 1);
+}
+info count_map.sortKey(true);
+
