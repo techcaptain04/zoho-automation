@@ -91,3 +91,32 @@ for each item in leads_list{
 }
 info count_map.sortKey(true);
 
+
+//mapping through time/date in zoho
+page_no = 1;
+per_page = 20;
+leads = zoho.crm.getRecords("Leads",page_no,per_page,{"fields":"Created_Time"});
+
+return_map = map();
+
+for each lead in leads{
+	year_key = lead.get("Created_Time").toDate().toString("yyyy");
+	month_key = lead.get("Created_Time").toDate().toString("MM");
+	day_key = lead.get("Created_Time").toDate().toString("dd");
+	hour_key = lead.get("Created_Time").toDate().toString("HH");
+	
+	//getting data
+	year_map = ifnull(return_map.get(year_key),map());
+	month_map = ifnull(year_map.get(month_key),map());
+	day_map =ifnull(month_map.get(day_key),map());
+	hour_value = ifnull(day_map.get(hour_key),0) + 1;
+	
+	//updating data
+	day_map.put(hour_key,hour_value);
+	month_map.put(day_key,day_map);
+	year_map.put(month_key,month_map);
+	return_map.put(year_key,year_map);
+}
+info return_map;
+
+
