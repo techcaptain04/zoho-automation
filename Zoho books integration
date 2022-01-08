@@ -1,0 +1,8 @@
+1. Get Response from CRM Quote Module
+2. Create Dummy Invoice in Books with same data like CRM 
+3. Create a ZOHO Books Connection in ZOho CRM
+4. Get books Invoice response. 
+5. Read Zoho Books API Documentation for searching Data in Contacts, Items, Contact Persons in Zoho Books.
+6. Ref URL https://www.zoho.com/deluge/help/books-tasks.html
+7. Prepare the Books_invoice_map from CRM Data 
+8. Create a Invoice in Zoho Books. 
