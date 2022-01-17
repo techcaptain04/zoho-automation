@@ -1,0 +1,29 @@
+start_date = '01-10-2022';
+end_date = '01-15-2022';
+excluded = ["10-01-2022", "11-01-2022", "14-01-2022", "15-01-2022", "10-01-2022", "12-01-2022"];
+daysBetween = start_date.daysBetween(end_date);
+daysloop = ".".leftPad(daysBetween).toList("");
+temp_date = start_date;
+eventBlocks = list();
+temp_start_date = start_date;
+temp_end_date = start_date;
+for each day in daysloop {
+	temp_date = temp_date.addDay(1);
+	if( excluded.containsValue(temp_start_date.toString("dd-MM-yyyy")) ||  excluded.containsValue(temp_date.toString("dd-MM-yyyy")) ||  temp_date.toString("dd-MM-yyyy") == end_date.toString("dd-MM-yyyy")){
+		if(temp_date.toString("dd-MM-yyyy") == end_date.toString("dd-MM-yyyy") && !excluded.containsValue(temp_date.toString("dd-MM-yyyy")) ) {
+			if(excluded.containsValue(temp_start_date.toString("dd-MM-yyyy"))){
+				eventBlocks.add({"startDate": temp_start_date.addDay(1), "endDate": temp_date});	
+			} else {
+				eventBlocks.add({"startDate": temp_start_date, "endDate": temp_date});		
+			}
+			
+		} else if(!excluded.containsValue(temp_start_date.toString("dd-MM-yyyy"))  ){
+			eventBlocks.add({"startDate": temp_start_date, "endDate": temp_date.subDay(1)});	
+					
+
+		} 
+		temp_end_date = temp_date;
+		temp_start_date = temp_date;
+	}
+}
+info eventBlocks;
