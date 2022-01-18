@@ -32,33 +32,51 @@ info eventBlocks;
 
 const start_date = "10-01-2022";
 const end_date = "15-01-2022";
-const excluded = ["11-01-2022", "14-01-2022"];
+const excluded_dates = ["12-01-2022", "14-01-2022"];
 
-let newEventList = [];
+let temp_date = start_date;
+let temp_start_date = start_date;
+let temp_end_date = start_date;
 
-let temp_date = moment(start_date, "DD-MM-YYYY");
+let eventBlocks = [];
 
-let temp_start_date = moment(start_date, "DD-MM-YYYY");
-let temp_end_date = moment(end_date, "DD-MM-YYYY");
-console.log("Start Here");
 for (
   var m = moment(start_date, "DD-MM-YYYY");
   m.diff(moment(end_date, "DD-MM-YYYY"), "days") <= 0;
   m.add(1, "days")
 ) {
-  temp_date = m.format("DD-MM-YYYY");
   const nextDayString = m.format("DD-MM-YYYY");
   const nextDay = moment(nextDayString, "DD-MM-YYYY").add(1, "days");
-  
-  if (
-    excluded.includes(temp_date) !== true ||
-    excluded.includes(nextDay.format("DD-MM-YYYY")) !== true
-  ) {
-      console.log({ start: temp_start_date, end: temp_date });
-  }
 
-  temp_end_date = temp_date;
-  temp_start_date = temp_date;
-  // console.log(moment(temp_end_date).format("DD-MM-YYYY"),moment(temp_start_date).format("DD-MM-YYYY"))
+  temp_date = next_day;
+
+  if (
+    excluded_dates.includes(temp_start_date) ||
+    excluded_dates.includes(temp_date) ||
+    nextDay.format("DD-MM-YYYY") !==
+      moment(end_date, "DD-MM-YYYY").add(1, "days").format("DD-MM-YY")
+  ) {
+    if (
+      excluded_dates.includes(temp_start_date) &&
+      excluded_dates.includes(temp_date) !== true
+    ) {
+      if (excluded_dates.includes(temp_start_date)) {
+        eventBlocks.push({
+          start: moment(temp_start_date).add(1, "day"),
+          end: temp_date,
+        });
+      } else {
+        eventBlock.push({ start: temp_start_date, end: temp_end_date });
+      }
+    } else if (excluded.includes(temp_start_date) !== true) {
+      eventBlocks.push({
+        start: moment(temp_start_date),
+        end: moment(temp_start_date).substract(1, "day"),
+      });
+    }
+    let temp_start_date = temp_date;
+    let temp_end_date =  temp_date;
+  }
 }
+
 
