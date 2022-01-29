@@ -133,3 +133,16 @@ response = invokeurl
 ];
 info response;
 
+//DATE TIME ADD WITH TIME ZONE
+appointment_start = deal_info.get("Appointment");
+	plus_minus_part = appointment_start.getSuffix("T");
+	if(plus_minus_part.contains("-"))
+	{
+		plus_minus_part = "-" + plus_minus_part.getSuffix("-");
+	}
+	else
+	{
+		plus_minus_part = "+" + plus_minus_part.getSuffix("+");
+	}
+	appointment_end = appointment_start.replaceAll("T"," ").toDateTime().addHour(1).toString("yyyy-MM-dd'T'HH:mm:ss") + plus_minus_part;
+
