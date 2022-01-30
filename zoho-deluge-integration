@@ -146,3 +146,8 @@ appointment_start = deal_info.get("Appointment");
 	}
 	appointment_end = appointment_start.replaceAll("T"," ").toDateTime().addHour(1).toString("yyyy-MM-dd'T'HH:mm:ss") + plus_minus_part;
 
+//Moving attachments from one module to another module
+attachments = zoho.crm.getRelatedRecords("Attachments","Leads",lead_id);
+
+link_map = {"File_Name":"test from API","Parent_Id":4394900000010041001,"$type":"Link URL","$se_module":"Deals","$link_url":"https://www.drupal.org/files/project-images/Placeholder1_0.png","Size":"0"};
+info zoho.crm.createRecord("Attachments",link_map);
