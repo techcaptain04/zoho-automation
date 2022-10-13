@@ -1,0 +1,53 @@
+document_id = "11j85efbf6acadfd14940ab45dcee9c775ba5";
+// merge_field_response = zoho.writer.getMergeFields(document_id,"zoho_writer_conn");
+// deal_id = 1160565000046418263;
+deal_resp = zoho.crm.getRecordById("Deals",deal_id);
+user_resp = zoho.crm.searchRecords("users","(email:equals:" + zoho.loginuserid + ")").get("users").get(0);
+contact_resp = zoho.crm.getRecordById("Contacts",deal_resp.get("Contact_Name").get("id"));
+data_strng = {"data":{{"Account_Name":deal_resp.get("Account_Name").get("name"),"Proposed_Positions":deal_resp.get("Proposed_Positions"),"Hours_per_week":deal_resp.get("Hours_per_week"),"Billing_Rate":deal_resp.get("Billing_Rate"),"Billing_Terms":deal_resp.get("Billing_Terms"),"user.full_name":user_resp.get("full_name"),"Contact_Name":deal_resp.get("Contact_Name").get("name"),"user.role":user_resp.get("role").get("name"),"Contact_Name.Title":contact_resp.get("Title")}}};
+params = {"output_format":"docx","merge_data":data_strng};
+resp = invokeurl
+[
+	url :"https://zohoapis.com/writer/api/v1/documents/" + document_id + "/merge"
+	type :POST
+	parameters:params
+	connection:"zoho_writer_conn"
+];
+file_name = "Statement of work for " + deal_resp.get("Deal_Name") + ".docx";
+resp.setFileName(file_name);
+zoho.crm.attachFile("Deals",deal_id,resp);
+request_map = {"request_name":"Statement of Work for " + deal_resp.get("Deal_name"),"actions":{{"recipient_name":contact_resp.get("Full_Name"),"recipient_email":contact_resp.get("Email"),"recipient_phonenumber":"","recipient_countrycode":"","action_type":"SIGN","private_notes":"Please get back to us for further queries","signing_order":0,"verify_recipient":false},{"recipient_name":user_resp.get("full_name"),"recipient_email":user_resp.get("email"),"recipient_phonenumber":"","recipient_countrycode":"","action_type":"SIGN","private_notes":"Please get back to us for further queries","signing_order":1,"verify_recipient":false}},"expiration_days":5,"is_sequential":true,"email_reminders":true,"reminder_period":8};
+dataMap = Map();
+dataMap.put("requests",request_map);
+requestMap = Map();
+requestMap.put("data",dataMap);
+// 		info requestMap;
+// Perform create document task to upload the files
+response = zoho.sign.createDocument(resp,requestMap);
+info "Response " + response;
+if(response.get("code") == 0)
+{
+	document_id = response.get("requests").get("document_ids").get(0).get("document_id");
+	request_id = response.get("requests").get("request_id");
+	info request_id;
+	signRequestMap = Map();
+	signRequestMap.put("request_name","Statement of Work for " + deal_resp.get("Deal_name"));
+	// Store the request details as a value to the key - data 
+	dataMap = Map();
+	dataMap.put("data",{"requests":signRequestMap});
+	signResponse = zoho.sign.submitRequest(request_id,dataMap);
+	info signResponse;
+	if(signResponse.get("code") == 0)
+	{
+		zoho.crm.updateRecord("Deals",deal_id,{"Statement_of_Work_Sign_ID":request_id,"Statement_of_Work_Sign_Status":"Sent for Signature"});
+	}
+}
+// upload_resp = invokeurl
+// [
+// 	url :"https://zohoapis.com/writer/api/v1/documents"
+// 	type :POST
+// 	parameters:{"filename":file_name}
+// 	files:resp
+// 	connection:"zoho_writer_conn"
+// ];
+// info upload_resp;
