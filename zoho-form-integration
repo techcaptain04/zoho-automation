@@ -1,0 +1,27 @@
+//Getting form data after submission
+crm_api_map = crmAPIRequest.toMap();
+params = crm_api_map.get("body");
+sendmail
+[
+	from :zoho.loginuserid
+	to :"mahadi@boostedcrm.com"
+	subject :"test"
+	message :params
+]
+
+//update data from form submission
+crm_api_map = crmAPIRequest.toMap();
+params = crm_api_map.get("body");
+info params;
+//{"Supporter_ID":"3796364000029306001","subform_data":[{"University_College_City":"City 1","University_College_Name":"Test 1"}],"Catchment_area_description":"Test 11","Multiple_other":"asdfasdfdsf"}
+upd_map_list = list();
+supporter_id = params.get("Supporter_ID");
+upd_item = Map();
+supporter_resp = zoho.crm.getRecordById("Supporters",params.get("Supporter_ID"));
+upd_map_list.addAll(ifnull(supporter_resp.get("Refining_Student_Supporte"),list()));
+for each  item in params.get("subform_data")
+{
+	upd_map_list.add({"University_College_City":item.get("University_College_City"),"University_College_Name":item.get("University_College_Name"),"Parent_Id":{"id":params.get("Supporter_ID")},"Multiple_other":params.get("Multiple_other"),"Catchment_area_description":params.get("Catchment_area_description")});
+}
+info zoho.crm.updateRecord("Supporters",params.get("Supporter_ID"),{"Refining_Student_Supporte":upd_map_list});
+return "";
