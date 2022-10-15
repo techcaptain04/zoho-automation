@@ -1,0 +1,36 @@
+document_id = "rnp4w0285ecf2322f487abbe817e647d5d4d3";
+// record_id = "1160565000046884389";
+format = "docx";
+module_name = "Deals";
+data_map = Map();
+// map key between writer and crm
+crm_writer_key_map = {}; 
+record_resp = zoho.crm.getRecordById(module_name,record_id);
+if( record_resp.get("id") != "")
+{
+    for each key in crm_writer_key_map.keys()
+    {
+		data_map.put(key, ifnull(record_resp.get(crm_writer_key_map.get(key)), "") );
+    }
+	param_map = Map();
+	data_strng = {
+        "data": [data_map]
+    };
+    info {"data_strng": data_strng};
+	params = {"output_format":format,"merge_data":data_strng};
+	file_stream = invokeurl
+	[
+		url : "https://zohoapis.com/writer/api/v1/documents/" + document_id + "/merge"
+		type :POST
+		parameters:params
+		connection:"zoho_writer_conn"
+	];
+    info {"file_stream": file_stream};
+    attach_file = zoho.crm.attachFile(module_name, record_id,file_stream); 
+    info {"attach_file": attach_file};
+}
+/*
+merge_field_response = zoho.writer.getMergeFields(document_id,"zoho_writer_conn");
+info merge_field_response;
+/*
+*/By Raihan Bhai
