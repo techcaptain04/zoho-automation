@@ -1,0 +1,37 @@
+records = zoho.crm.getRecords("FP_Projects",0,200,{"cvid":"1915689000054091041"});
+
+upd_list = List();
+for each  item in records
+{
+	item_list = List();
+	item_map = {
+		"Site_Name3" : item.get("Site_Name3"),
+		"w_s_s" : item.get("Work_Summary_Sale"),
+		"proj_sow" : item.get("Scope_of_Work_URL"),
+		"id" : item.get("id"),
+		"Name" : item.get("Name"),
+		"Job_Number" : item.get("Job_Number"),
+		"Client_name" : item.get("Account_name"),
+		"client_contact_name" : item.get("Client_name"),
+		"Client_phone" : item.get("Client_phone"),
+		"Site_address" : item.get("Site_address"),
+		"hide_from_contractor": true
+	};
+	client_completion_certificate_url = "https://zfrmz.com/rXcdk2qZIMDkvbSIjobT/?";
+	for each thing in item_map.keys(){
+		client_completion_certificate_url = client_completion_certificate_url + "&"+thing+"="+zoho.encryption.urlEncode(item_map.get(thing));
+	}
+	upd_list.add({"id":item.get("id"), "Completion_Certificate_URL_Client" :  client_completion_certificate_url});
+	if(upd_list.size() == 100)
+	{
+		info zoho.crm.bulkUpdate("FP_Projects",upd_list);
+		upd_list = List();
+	}
+}
+if(upd_list.size() > 0)
+{
+	info zoho.crm.bulkUpdate("FP_Projects",upd_list);
+}
+
+
+return "";
