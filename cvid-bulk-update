@@ -1,0 +1,15 @@
+records = zoho.crm.getRecords("Contacts",0,200,{"cvid":"5487746000000797838"});
+upd_list = List();
+for each  item in records
+{
+	upd_list.add({"id":item.get("id"),"Patient_Last_Name":item.get("Last_Name"),"Patient_First_Name":item.get("First_Name")});
+	if(upd_list.size() == 100)
+	{
+		info zoho.crm.bulkUpdate("Contacts",upd_list);
+		upd_list = List();
+	}
+}
+if(upd_list.size() > 0)
+{
+	info zoho.crm.bulkUpdate("Contacts",upd_list);
+}
