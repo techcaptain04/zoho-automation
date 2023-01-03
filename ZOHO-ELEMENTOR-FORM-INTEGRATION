@@ -1,0 +1,32 @@
+form_api_name = {"Last_Name":"Last Name","First_Name":"First Name","Email":"Email Address","Description":"Message","Phone":"Phone"};
+body_string = crmAPIRequest.get("body");
+body_string = zoho.encryption.urlDecode(body_string);
+body_params_string = body_string.toList("&");
+body_params_array = body_params_string.toList(",");
+params = Map();
+for each  body_param in body_params_array
+{
+	parts = body_param.toList("=");
+	if(parts.size() == 2)
+	{
+		params.put(parts.get(0),parts.get(1));
+	}
+}
+// info params;
+if(params.get("City") == null && params.get("Street") == null && params.get("Country") == null)
+{
+	create_map = {"Lead_Source":"Homepage Form"};
+	for each  item in form_api_name.keys()
+	{
+		create_map.put(item,params.get(form_api_name.get(item)));
+	}
+	sendmail
+	[
+		from :zoho.loginuserid
+		to :"mahadi.hanshan@gmail.com"
+		subject :"BoostedCRM Test"
+		message :create_map
+	]
+	resp = zoho.crm.createRecord("Leads",create_map,{"trigger":{"workflow"}});
+}
+return "";
