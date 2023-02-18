@@ -1,0 +1,42 @@
+contractor = zoho.crm.getRecordById("Contractors",1915689000023248128);
+contractor_owner = contractor.get("Name_of_Employing_Contractor").get("id");
+queryMap = Map();
+queryMap.put("select_query","select id, First_Name,Last_Name ,Email from Contractors where Name_of_Employing_Contractor.Email = 'muhammad_ashraf201328@yahoo.co.uk' ");
+response = invokeurl
+[
+	url :"https://www.zohoapis.com/crm/v2/coql"
+	type :POST
+	parameters:queryMap.toString()
+	connection:"zoho_crm_api_v2"
+];
+info response;
+merge_field_response = zoho.writer.getMergeFields("dldmf09a38733477b4422a2f4004050f138ec","zoho_writer_conn");
+info merge_field_response;
+project_id = 1915689000040118034;
+// info zoho.crm.getRecordById("FP_Projects", project_id);
+project_variations = zoho.crm.getRelatedRecords("Project_Variation","FP_Projects",project_id);
+for each  variant in project_variations
+{
+	info variant.get("id");
+}
+file_stream = invokeurl
+[
+	url :"https://via.placeholder.com/150"
+	type :GET
+];
+response = zoho.workdrive.uploadFile(file_stream,"5okrr03f88803cca34788a2a51b36749efab0","test",False,"workdrive_oauth_connection");
+resource_id = response.get("data").get(0).get("attributes").get("resource_id");
+header = {"Accept":"application/vnd.api+json"};
+data = Map();
+att_param1 = {"resource_id":resource_id,"shared_type":"everyone","role_id":34};
+data_param1 = {"attributes":att_param1,"type":"permissions"};
+data.put("data",data_param1);
+share_response = invokeurl
+[
+	url :"https://www.zohoapis.com/workdrive/api/v1/permissions"
+	type :POST
+	parameters:data.toString()
+	headers:header
+	connection:"workdrive_oauth_connection"
+];
+info share_response.get("data").get("attributes").get("permalink");
