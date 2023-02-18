@@ -1,0 +1,18 @@
+fp_quotes_id = "1915689000033229148";
+fp_quotes_resp = zoho.crm.getRecordById("Job_Books",fp_quotes_id);
+if(fp_quotes_resp.get("Personal_Acceptance_Form") != null)
+{
+	fp_acc_form = fp_quotes_resp.get("Personal_Acceptance_Form").toString();
+	mp = Map();
+	mp.put("Accept","application/vnd.api+json");
+	mp.put("apikey","");
+	params = {"destination":fp_acc_form,"domain":{"fullName":"rebrand.ly"}};
+	test_url = invokeurl
+	[
+		url :"https://api.rebrandly.com/v1/links"
+		type :POST
+		parameters:params.toString()
+		headers:{"content-type":"application/json","apikey":"f51700f4dfd44ab9bba06d440e388e80"}
+	];
+}
+info test_url.get("shortUrl");
