@@ -1,0 +1,19 @@
+fp_invoice_resp=zoho.crm.getRecordById("FP_Invoice",
+fp_invoice_id);invoiced_contractor=fp_invoice_resp.get("Contractor_id");invoiced_this_week=fp_invoice_resp.get("Subform_1");updateList=List();foreachinvoiceininvoiced_this_week{
+  job_no=invoice.get("Job_Number");hours_this_week=invoice.get("Estimated_Time_Allocation_charged");project_labor_resp=zoho.crm.searchRecords("Project_Labor",
+  "(Job_No:equals:"+job_no+")");if(project_labor_resp.size()==1){
+    labour_found=project_labor_resp.get("0");labour_found_resp=zoho.crm.getRecordById("Project_Labor",
+    labour_found.get("id"));foreachsubforminlabour_found_resp.get("Labour_Board_Contractors"){
+      if(subform.get("Contractors").get("id")==invoiced_contractor){
+        upd_map=subform;upd_map.put("This_Week_Invoiced_Hour",
+        hours_this_week);updateList.add(upd_map);
+      }else{
+        updateList.add(subform);
+      }
+    }infozoho.crm.updateRecord("Project_Labor",
+    labour_found.get("id"),
+    {
+      "Labour_Board_Contractors": updateList
+    });;
+  }
+}
