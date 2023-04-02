@@ -1,0 +1,87 @@
+form_api_name = {"ZIP":"ZIP","Make and Model":"Make and Model","How old is the equipment":"How old is the equipment","Repair Need":"Repair Needed","Manufacturer":"Manufacturer","State":"State","City":"City","Serial Number":"Serial Number"};
+account_mapping = {"firstName":"First Name","lastName":"Last Name","email":"Email","phone":"Phone"};
+crm_api_request = ifnull(crmAPIRequest,Map()).toMap();
+body_string = ifnull(crm_api_request.get("body"),"");
+body_string = zoho.encryption.urlDecode(body_string);
+body_params_string = body_string.toList("&");
+account_params = Map();
+contact_params = Map();
+params = Map();
+body_params_array = body_params_string.toList(",");
+for each  body_param in body_params_array
+{
+	parts = body_param.toList("=");
+	if(parts.size() == 2)
+	{
+		params.put(parts.get(0),parts.get(1));
+	}
+}
+// Search Contact in Zoho Desk
+search_contact = invokeurl
+[
+	url :"https://desk.zoho.com/api/v1/contacts/search?email=" + ifnull(params.get("Email"),"")
+	type :GET
+	connection:"zoho_one_conn"
+];
+contact_list = ifnull(search_contact.get("data"),List());
+contact_id = "";
+account_id = "";
+customFields = Map();
+if(contact_list.size() >= 1)
+{
+	// Collect contact id, account id
+	contact = contact_list.get(0);
+	contact_id = contact.get("id");
+	account_id = ifnull(contact.get("accountId"),"");
+}
+if(account_id == "")
+{
+	account_name = "";
+	for each  item in account_mapping.keys()
+	{
+		if(item == "firstName")
+		{
+			account_name = params.get(account_mapping.get(item));
+		}
+		if(item == "lastName")
+		{
+			account_name = account_name + " " + params.get(account_mapping.get(item));
+		}
+		if(item != "firstName" && item != "lastName")
+		{
+			account_params.put(item,params.get(account_mapping.get(item)));
+		}
+		contact_params.put(item,params.get(account_mapping.get(item)));
+	}
+	account_params.put("accountName",account_name);
+	account_resp = zoho.desk.create(805400051,"accounts",account_params);
+	account_id = account_resp.get("id");
+	contact_params.put("accountId",account_id);
+}
+if(contact_id == "")
+{
+	// Create Contact
+	contact_resp = zoho.desk.create(805400051,"contacts",contact_params);
+	contact_id = contact_resp.get("id");
+}
+// // // Create Ticket
+ticket_map = {"departmentId":"835195000000006907","contactId":contact_id,"accountId":account_id,"email":ifnull(params.get("Email"),""),"phone":ifnull(params.get("Phone"),""),"subject":"Repair Service Form","description":"This is a test form submission","status":"Open","priority":"Medium"};
+for each  item in form_api_name.keys()
+{
+	customFields.put(item,params.get(form_api_name.get(item)));
+}
+ticket_map.put("customFields",customFields);
+headers = {"orgId":"805400051","content-type":"application/json"};
+ticket_details = invokeurl
+[
+	url :"https://desk.zoho.com/api/v1/tickets"
+	type :POST
+	parameters:ticket_map.toString()
+	headers:headers
+	connection:"zoho_one_conn"
+];
+info ticket_details;
+
+return "";
+/*
+*/
