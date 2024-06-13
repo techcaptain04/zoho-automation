@@ -1,0 +1,147 @@
+// response = Map();
+// crm_api_request = ifnull(crmAPIRequest,Map()).toMap();
+// body = ifnull(crm_api_request.get("body"),Map()).toMap();
+to_email = "mahadi.hanshan@gmail.com";
+try 
+{
+	delete_keys = {"Status","Date","Job No","Client","Project","Office Budget","Assess","WIP","To Complete"};
+	xl_data = invokeurl
+	[
+		url :"https://furlong-painting-lb-db-12-jun.free.beeceptor.com/new"
+		type :GET
+	];
+	start_page = zoho.crm.getOrgVariable("start_page").toNumber();
+	// 		start_page = 1;
+	// 	info "The value of the custom variable, Score, is " + start_page;
+	limit = 1;
+	final_value = start_page + limit;
+	subList = xl_data.subList(start_page,final_value);
+	info subList.size();
+	// 	info subList;
+	db_list = List();
+	for each  xl_record in subList
+	{
+		final_contractor_map = {"1915689000015207391":{"Contractors":"1915689000015207391","Contractor_First_Name":"Donny","Contractor_Status":"Active","This_Week_Invoiced_Hour":0,"Total_Invoiced":0},"1915689000015207397":{"Contractors":"1915689000015207397","Contractor_First_Name":"Troy","Contractor_Status":"Active","This_Week_Invoiced_Hour":0,"Total_Invoiced":0},"1915689000015207401":{"Contractors":"1915689000015207401","Contractor_First_Name":"Christine","Contractor_Status":"Active","This_Week_Invoiced_Hour":0,"Total_Invoiced":0},"1915689000015207394":{"Contractors":"1915689000015207394","Contractor_First_Name":"William","Contractor_Status":"Active","This_Week_Invoiced_Hour":0,"Total_Invoiced":0},"1915689000015207390":{"Contractors":"1915689000015207390","Contractor_First_Name":"John","Contractor_Status":"Active","This_Week_Invoiced_Hour":0,"Total_Invoiced":0},"1915689000041107001":{"Contractors":"1915689000041107001","Contractor_First_Name":"Michael","Contractor_Status":"Active","This_Week_Invoiced_Hour":0,"Total_Invoiced":0},"1915689000023248001":{"Contractors":"1915689000023248001","Contractor_First_Name":"Muhammad","Contractor_Status":"Active","This_Week_Invoiced_Hour":0,"Total_Invoiced":0},"1915689000015207393":{"Contractors":"1915689000015207393","Contractor_First_Name":"Keith","Contractor_Status":"Active","This_Week_Invoiced_Hour":0,"Total_Invoiced":0},"1915689000015207403":{"Contractors":"1915689000015207403","Contractor_First_Name":"Jobanpreet","Contractor_Status":"Active","This_Week_Invoiced_Hour":0,"Total_Invoiced":0},"1915689000015207396":{"Contractors":"1915689000015207396","Contractor_First_Name":"Andy","Contractor_Status":"Active","This_Week_Invoiced_Hour":0,"Total_Invoiced":0},"1915689000015207400":{"Contractors":"1915689000015207400","Contractor_First_Name":"Parimal","Contractor_Status":"Active","This_Week_Invoiced_Hour":0,"Total_Invoiced":0},"1915689000049727072":{"Contractors":"1915689000049727072","Contractor_First_Name":"Daniel","Contractor_Status":"Active","This_Week_Invoiced_Hour":0,"Total_Invoiced":0},"1915689000064744108":{"Contractors":"1915689000064744108","Contractor_First_Name":"Anoop","Contractor_Status":"Active","This_Week_Invoiced_Hour":0,"Total_Invoiced":0},"1915689000015207395":{"Contractors":"1915689000015207395","Contractor_First_Name":"Sayed A","Contractor_Status":"Inactive","This_Week_Invoiced_Hour":0,"Total_Invoiced":0},"1915689000068615010":{"Contractors":"1915689000068615010","Contractor_First_Name":"Bostan","Contractor_Status":"Active","This_Week_Invoiced_Hour":0,"Total_Invoiced":0},"1915689000087330001":{"Contractors":"1915689000087330001","Contractor_First_Name":"Wali","Contractor_Status":"Active","This_Week_Invoiced_Hour":0,"Total_Invoiced":0},"1915689000088198557":{"Contractors":"1915689000088198557","Contractor_First_Name":"Kamal","Contractor_Status":"Not Inducted","This_Week_Invoiced_Hour":0,"Total_Invoiced":0},"1915689000087695279":{"Contractors":"1915689000087695279","Contractor_First_Name":"Richard","Contractor_Status":"Active","This_Week_Invoiced_Hour":0,"Total_Invoiced":0},"1915689000015207392":{"Contractors":"1915689000015207392","Contractor_First_Name":"Leigh","Contractor_Status":"Inactive","This_Week_Invoiced_Hour":0,"Total_Invoiced":0},"1915689000018022001":{"Contractors":"1915689000018022001","Contractor_First_Name":"Farhad","Contractor_Status":"Inactive","This_Week_Invoiced_Hour":0,"Total_Invoiced":0},"1915689000097853266":{"Contractors":"1915689000097853266","Contractor_First_Name":"Brendan","Contractor_Status":"Not Inducted","This_Week_Invoiced_Hour":0,"Total_Invoiced":0},"1915689000015207417":{"Contractors":"1915689000015207417","Contractor_First_Name":"Ivan","Contractor_Status":"Inactive","This_Week_Invoiced_Hour":0,"Total_Invoiced":0},"1915689000015207386":{"Contractors":"1915689000015207386","Contractor_First_Name":"Brian","Contractor_Status":"Inactive","This_Week_Invoiced_Hour":0,"Total_Invoiced":0},"1915689000015207398":{"Contractors":"1915689000015207398","Contractor_First_Name":"Paul","Contractor_Status":"Inactive","This_Week_Invoiced_Hour":0,"Total_Invoiced":0},"1915689000015207384":{"Contractors":"1915689000015207384","Contractor_First_Name":"Brett","Contractor_Status":"Inactive","This_Week_Invoiced_Hour":0,"Total_Invoiced":0},"1915689000015207399":{"Contractors":"1915689000015207399","Contractor_First_Name":"Shaun","Contractor_Status":"Inactive","This_Week_Invoiced_Hour":0,"Total_Invoiced":0},"1915689000015207406":{"Contractors":"1915689000015207406","Contractor_First_Name":"Andrew","Contractor_Status":"Inactive","This_Week_Invoiced_Hour":0,"Total_Invoiced":0},"1915689000015207385":{"Contractors":"1915689000015207385","Contractor_First_Name":"Kelly","Contractor_Status":"Inactive","This_Week_Invoiced_Hour":0,"Total_Invoiced":0},"1915689000015207387":{"Contractors":"1915689000015207387","Contractor_First_Name":"Tony","Contractor_Status":"Inactive","This_Week_Invoiced_Hour":0,"Total_Invoiced":0},"1915689000097900001":{"Contractors":"1915689000097900001","Contractor_First_Name":"Asi","Contractor_Status":"Inactive","This_Week_Invoiced_Hour":0,"Total_Invoiced":0},"1915689000097900067":{"Contractors":"1915689000097900067","Contractor_First_Name":"Tim","Contractor_Status":"Inactive","This_Week_Invoiced_Hour":0,"Total_Invoiced":0},"1915689000097900111":{"Contractors":"1915689000097900111","Contractor_First_Name":"Ben","Contractor_Status":"Inactive","This_Week_Invoiced_Hour":0,"Total_Invoiced":0},"1915689000015207402":{"Contractors":"1915689000015207402","Contractor_First_Name":"James","Contractor_Status":"Inactive","This_Week_Invoiced_Hour":0,"Total_Invoiced":0},"1915689000097900155":{"Contractors":"1915689000097900155","Contractor_First_Name":"FARID","Contractor_Status":"Inactive","This_Week_Invoiced_Hour":0,"Total_Invoiced":0},"1915689000015207389":{"Contractors":"1915689000015207389","Contractor_First_Name":"Heath","Contractor_Status":"Inactive","This_Week_Invoiced_Hour":0,"Total_Invoiced":0},"1915689000015207388":{"Contractors":"1915689000015207388","Contractor_First_Name":"Mehdi","Contractor_Status":"Inactive","This_Week_Invoiced_Hour":0,"Total_Invoiced":0},"1915689000097900199":{"Contractors":"1915689000097900199","Contractor_First_Name":"NIC","Contractor_Status":"Inactive","This_Week_Invoiced_Hour":0,"Total_Invoiced":0},"1915689000097900243":{"Contractors":"1915689000097900243","Contractor_First_Name":"Travis","Contractor_Status":"Inactive","This_Week_Invoiced_Hour":0,"Total_Invoiced":0},"1915689000097900287":{"Contractors":"1915689000097900287","Contractor_First_Name":"CHRIS","Contractor_Status":"Inactive","This_Week_Invoiced_Hour":0,"Total_Invoiced":0},"1915689000097900331":{"Contractors":"1915689000097900331","Contractor_First_Name":"CRAIG","Contractor_Status":"Inactive","This_Week_Invoiced_Hour":0,"Total_Invoiced":0},"1915689000097900375":{"Contractors":"1915689000097900375","Contractor_First_Name":"SEAN","Contractor_Status":"Inactive","This_Week_Invoiced_Hour":0,"Total_Invoiced":0},"1915689000097900419":{"Contractors":"1915689000097900419","Contractor_First_Name":"STUART","Contractor_Status":"Inactive","This_Week_Invoiced_Hour":0,"Total_Invoiced":0},"1915689000097900463":{"Contractors":"1915689000097900463","Contractor_First_Name":"Ian","Contractor_Status":"Inactive","This_Week_Invoiced_Hour":0,"Total_Invoiced":0},"1915689000097900507":{"Contractors":"1915689000097900507","Contractor_First_Name":"SAM","Contractor_Status":"Inactive","This_Week_Invoiced_Hour":0,"Total_Invoiced":0},"1915689000097900551":{"Contractors":"1915689000097900551","Contractor_First_Name":"GEORGE","Contractor_Status":"Inactive","This_Week_Invoiced_Hour":0,"Total_Invoiced":0},"1915689000097900595":{"Contractors":"1915689000097900595","Contractor_First_Name":"Bob","Contractor_Status":"Inactive","This_Week_Invoiced_Hour":0,"Total_Invoiced":0},"1915689000097900639":{"Contractors":"1915689000097900639","Contractor_First_Name":"Roger","Contractor_Status":"Inactive","This_Week_Invoiced_Hour":0,"Total_Invoiced":0}};
+		contractor_name_map = {"DONNY G":"1915689000015207391","Troy K":"1915689000015207397","Christine":"1915689000015207401","WILLIE H":"1915689000015207394","JOHN E":"1915689000015207390","Michael I":"1915689000041107001","Ashraf":"1915689000023248001","Keith H":"1915689000015207393","Joban":"1915689000015207403","Andy J":"1915689000015207396","Parimal":"1915689000015207400","Daniel":"1915689000049727072","Anoop":"1915689000064744108","Sayed":"1915689000015207395","Bostan":"1915689000068615010","Wali":"1915689000087330001","Kamal S":"1915689000088198557","Richard B":"1915689000087695279","LEIGH G":"1915689000015207392","Farhad B":"1915689000018022001","Brendan":"1915689000097853266","IVAN M":"1915689000015207417","BRIAN C":"1915689000015207386","PAUL L":"1915689000015207398","BRETT M":"1915689000015207384","Shaun P":"1915689000015207399","Andrew B":"1915689000015207406","Kelly":"1915689000015207385","Tony C":"1915689000015207387","Asi M":"1915689000097900001","Tim M":"1915689000097900067","Ben W-P":"1915689000097900111","James R":"1915689000015207402","FARID":"1915689000097900155","Heath D":"1915689000015207389","MEHDI D":"1915689000015207388","NIC P":"1915689000097900199","Travis":"1915689000097900243","CHRIS G":"1915689000097900287","CRAIG M":"1915689000097900331","SEAN O":"1915689000097900375","STUART L":"1915689000097900419","Ian M":"1915689000097900463","SAM J":"1915689000097900507","GEORGE O":"1915689000097900551","Bob A":"1915689000097900595","Roger H":"1915689000097900639"};
+		delete_keys = {"Status","Date","Job No","Client","Project","Office Budget","Assess","WIP","To Complete"};
+		for each  contractor_name in contractor_name_map.keys()
+		{
+			if(xl_record.get(contractor_name) != null)
+			{
+				contractor_map = final_contractor_map.get(contractor_name_map.get(contractor_name));
+				contractor_map.put("Total_Invoiced",xl_record.get(contractor_name));
+				final_contractor_map.put(contractor_name_map.get(contractor_name),contractor_map);
+			}
+		}
+		record_map = {"labor_board_contractors_data":final_contractor_map.values().toString(),"Labour_Board_Contractors":final_contractor_map.values(),"Name":"P" + ifnull(xl_record.get("Job No"),"") + " - " + ifnull(xl_record.get("Project"),""),"office_budget":ifnull(xl_record.get("Office Budget"),0),"Project_Status":ifnull(xl_record.get("Status"),""),"Job_No":ifnull(xl_record.get("Job No") + "",""),"Client":ifnull(xl_record.get("Client"),""),"to_complete":ifnull(xl_record.get("To Complete"),""),"wip":ifnull(xl_record.get("WIP"),0),"asses":ifnull(xl_record.get("Assess"),0)};
+		Job_No = ifnull(xl_record.get("Job No"),"");
+		Office_Budge = ifnull(xl_record.get("Office Budget"),0);
+		try 
+		{
+			query = "((Job_Book_Number:equals:" + Job_No + ")and(Budget_hours:equals:" + Office_Budge + "))";
+			peojects = zoho.crm.searchRecords("FP_Projects",query);
+			// 	query = "Job_Book_Number:equals:"+ Job_No;
+			// 	search_projects = invokeurl
+			//     [
+			//     	url: "https://www.zohoapis.com/crm/v6/FP_Projects/search?criteria="+query+"&fields=id,Name,Work_Summary_Sale,Sale_Date_for_Form"
+			//     	type: GET
+			// 		connection: "zoho_crm_api_v2"
+			//     ];
+			// 	info {"search_projects": search_projects};
+			// 		info {"xl_record":xl_record};
+			// 		info query;
+			// 		info {"peojects":peojects};
+			if(peojects.size() == 1)
+			{
+				project_id = peojects.get(0).get("id");
+				project_name = peojects.get(0).get("Name");
+				Project_Summary = peojects.get(0).get("Work_Summary_Sale");
+				project_date = peojects.get(0).get("Sale_Date_for_Form");
+				Project_Status = peojects.get(0).get("Project_Status");
+				record_map.put("Project",project_id);
+				// record_map.put( "Name", project_name );
+				record_map.put("Project_Summary",Project_Summary);
+				if(project_date != null)
+				{
+					record_map.put("Date",project_date.toDate("dd-MMM-yyyy").toString("yyyy-MM-dd"));
+				}
+				record_map.put("Project_Status1",Project_Status);
+			}
+			else if(peojects.size() > 1)
+			{
+				record_map.put("Multiple_Projects",true);
+				record_map.put("Projects_JSON",peojects);
+			}
+		}
+		catch (error)
+		{
+			info "serarch error";
+		}
+		// 		info {"record_map":record_map};
+		db_list.add(record_map);
+	}
+	info {"db_list":db_list};
+	bulkCreate = zoho.crm.bulkCreate("Project_Labor",db_list);
+	// 	sendmail
+	// 	[
+	// 		from :zoho.adminuserid
+	// 		to : to_email
+	// 		subject :"db_list from " + start_page + " to " + final_value
+	// 		message :{"subList":subList,"bulkCreate":bulkCreate,"db_list":db_list}
+	// 	]
+	valueMap = Map();
+	valueMap.put("apiname","start_page");
+	valueMap.put("value",final_value);
+	resp = zoho.crm.invokeConnector("crm.set",valueMap);
+	// 	info resp;
+	/*
+	*/
+}
+catch (error)
+{
+	info error;
+	sendmail
+	[
+		from :zoho.adminuserid
+		to :to_email
+		subject :"Error!!! db_list from " + start_page + " to " + final_value
+		message :{"error":error}
+	]
+}
+/*
+project_Labor_id = "1915689000100077012";
+labour = zoho.crm.getRecordById("Project_Labor", project_Labor_id);
+info labour;
+/*
+cvid = "1915689000098574273";
+page = 1;
+per_page = 100;
+labours = zoho.crm.getRecords("Project_Labor",page,per_page,{"cvid":cvid});
+dbLists = List();
+for each  labour in labours
+{
+	test_labour = zoho.crm.getRecordById("Project_Labor",labour.get("id"));
+	Labour_Board_Contractors = ifnull(test_labour.get("Labour_Board_Contractors"),List());
+	labor_board_contractors_data = Labour_Board_Contractors.toString();
+	// 	my_list = List();
+	// 	my_list.addAll(Labour_Board_Contractors);
+	// 	temp_contractor_map = final_contractor_map;
+	// 	exis_contractor_list = List();
+	// 	for each  contractor in my_list
+	// 	{
+	// 		contractors_id = ifnull(contractor.get("Contractors"),Map()).get("id");
+	// 		if(contractors_id != "")
+	// 		{
+	// 			exis_contractor_list.add(contractors_id + "");
+	// 		}
+	// 	}
+	// 	temp_contractor_map.deleteKeys(exis_contractor_list);
+	// 	Labour_Board_Contractors.addAll(temp_contractor_map.values());
+	board_map = {"id":test_labour.get("id"),"labor_board_contractors_data":labor_board_contractors_data,"Mass_Updated":false};
+	dbLists.add(board_map);
+}
+// info dbLists;
+bulkUpdate = zoho.crm.bulkUpdate("Project_Labor",dbLists);
+/*
+*/
+return "";
